@@ -17,6 +17,11 @@ db.on('error', (err) => console.log(err.message + ' is Mongod not running?'));
 db.on('connected', () => console.log('mongo connected: ', MONGODB_URI));
 db.on('disconnected', () => console.log('mongo disconnected'));
 
+/////////////////
+// CONTROlLERS
+const usersController = require('./controllers/usersController');
+app.use('/users', usersController);
+
 app.get('/', (req, res) => {
   res.send('exquisite corpse');
 });
