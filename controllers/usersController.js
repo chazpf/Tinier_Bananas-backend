@@ -11,17 +11,14 @@ users.post('/new', (req, res) => {
   req.body.password= bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
   User.create(req.body, (err, createdUser) => {
     if(err){
-      console.log(err);
       res.json(err.message);
     } else {
-      console.log('user is created', createdUser);
       res.json(createdUser);
     }
   });
 });
 
 users.put('/login', (req, res) => {
-  console.log(req.body);
   User.findOne({username: req.body.username}, (err, foundUser) => {
     if (err) {
       res.json('Oops, database error. Please try again');
@@ -33,6 +30,17 @@ users.put('/login', (req, res) => {
       } else {
         res.json('Username and password do not match. Please try again.');
       }
+    }
+  });
+});
+
+users.delete('/:username', (req, res) => {
+  const { username } = req.params;
+  User.findOneAndDelete({username: username}, (err, deletedUser) => {
+    if (err) {
+      res.json('Oops, database error. User not deleted.');
+    } else {
+      res.json(deletedUser);
     }
   });
 });
