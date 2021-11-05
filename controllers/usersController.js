@@ -8,9 +8,12 @@ users.get('/new', (req, res) => {
 });
 
 users.post('/new', (req, res) => {
-  req.body.password= bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
+  req.body.password = bcrypt.hashSync(
+    req.body.password,
+    bcrypt.genSaltSync(10)
+  );
   User.create(req.body, (err, createdUser) => {
-    if(err){
+    if (err) {
       console.log(err);
       res.json(err.message);
     } else {
@@ -22,14 +25,14 @@ users.post('/new', (req, res) => {
 
 users.put('/login', (req, res) => {
   console.log(req.body);
-  User.findOne({username: req.body.username}, (err, foundUser) => {
+  User.findOne({ username: req.body.username }, (err, foundUser) => {
     if (err) {
       res.json('Oops, database error. Please try again');
     } else {
       if (!foundUser) {
         res.json('Username and password do not match. Please try again.');
-      } else if(bcrypt.compareSync(req.body.password, foundUser.password)) {
-        res.json({username: foundUser.username});
+      } else if (bcrypt.compareSync(req.body.password, foundUser.password)) {
+        res.json({ username: foundUser.username });
       } else {
         res.json('Username and password do not match. Please try again.');
       }
