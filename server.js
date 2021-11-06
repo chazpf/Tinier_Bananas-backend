@@ -8,19 +8,19 @@ const http = require('http');
 const server = http.createServer(app);
 
 // socket.io
-const io = require("socket.io")(server, {
+const io = require('socket.io')(server, {
   cors: {
-    origin: 'http://localhost:3000',
-  }
+    origin: 'https://fierce-mesa-54468.herokuapp.com/',
+  },
 });
 
-io.on('connection', socket => {
+io.on('connection', (socket) => {
   const room = socket.handshake.query.roomName;
   socket.join(room);
 
   socket.on('send-message', ({ sender, text }) => {
-    socket.broadcast.to(room).emit('receive-message', { sender, text })
-  })
+    socket.broadcast.to(room).emit('receive-message', { sender, text });
+  });
 });
 
 // Environmental variables
