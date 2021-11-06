@@ -14,17 +14,14 @@ users.post('/new', (req, res) => {
   );
   User.create(req.body, (err, createdUser) => {
     if (err) {
-      console.log(err);
       res.json(err.message);
     } else {
-      console.log('user is created', createdUser);
       res.json(createdUser);
     }
   });
 });
 
 users.put('/login', (req, res) => {
-  console.log(req.body);
   User.findOne({ username: req.body.username }, (err, foundUser) => {
     if (err) {
       res.json('Oops, database error. Please try again');
@@ -32,10 +29,21 @@ users.put('/login', (req, res) => {
       if (!foundUser) {
         res.json('Username and password do not match. Please try again.');
       } else if (bcrypt.compareSync(req.body.password, foundUser.password)) {
-        res.json({ username: foundUser.username });
+        res.json({ username: foundUser.username, room: foundUser.room });
       } else {
         res.json('Username and password do not match. Please try again.');
       }
+    }
+  });
+});
+
+users.delete('/:username', (req, res) => {
+  const { username } = req.params;
+  User.findOneAndDelete({ username: username }, (err, deletedUser) => {
+    if (err) {
+      res.json('Oops, database error. User not deleted.');
+    } else {
+      res.json(deletedUser);
     }
   });
 });
