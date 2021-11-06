@@ -10,7 +10,7 @@ const server = http.createServer(app);
 // socket.io
 const io = require('socket.io')(server, {
   cors: {
-    origin: 'http://fierce-mesa-54468.herokuapp.com/',
+    origin: 'http://fierce-mesa-54468.herokuapp.com',
   },
 });
 
