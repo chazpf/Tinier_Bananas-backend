@@ -15,11 +15,11 @@ const io = require("socket.io")(server, {
 });
 
 io.on('connection', socket => {
-  const room = socket.handshake.query.room;
+  const room = socket.handshake.query.roomName;
   socket.join(room);
 
   socket.on('send-message', ({ sender, text }) => {
-    socket.to(room).emit('receive-message', { sender, text })
+    socket.broadcast.to(room).emit('receive-message', { sender, text })
   })
 });
 
