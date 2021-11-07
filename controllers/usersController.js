@@ -22,7 +22,11 @@ users.post('/new', (req, res) => {
     if (err) {
       res.json(err.message);
     } else {
-      res.json(createdUser);
+      res.json({
+        username: createdUser.username,
+        avatar: createdUser.avatar,
+        id: createdUser._id,
+      });
     }
   });
 });
@@ -35,7 +39,11 @@ users.put('/login', (req, res) => {
       if (!foundUser) {
         res.json('Username and password do not match. Please try again.');
       } else if (bcrypt.compareSync(req.body.password, foundUser.password)) {
-        res.json({ username: foundUser.username, avatar: foundUser.avatar });
+        res.json({
+          username: foundUser.username,
+          avatar: foundUser.avatar,
+          id: foundUser._id,
+        });
       } else {
         res.json('Username and password do not match. Please try again.');
       }
@@ -55,13 +63,13 @@ users.delete('/:username', (req, res) => {
 });
 
 users.put('/:username', (req, res) => {
-  User.findOneAndUpdate(
-    { username: req.body.username },
-    req.body,
+  User.findByIdAndUpdate(
+    req.body.id,
+    { $set: { username: req.body.username, avatar: req.body.avatar } },
     { new: true },
     (err, updatedUser) => {
       if (err) {
-        res.json('Something went wrong');
+        res.json(err.message);
       } else {
         res.json(updatedUser);
       }
