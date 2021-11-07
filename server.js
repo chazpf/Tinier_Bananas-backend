@@ -34,11 +34,15 @@ io.on('connection', (socket) => {
   io.to(room).emit('joined', roomList[room]);
 
   socket.on('send-message', ({ sender, text, avatar }) => {
-    socket.broadcast.to(room).emit('receive-message', { sender, text, avatar });
+    io.to(room).emit('receive-message', { sender, text, avatar });
   });
 
-  socket.on('begin-game', (gameState) => {
-    io.to(room).emit('game-has-begun', gameState);
+  socket.on('begin-game', turnOrder => {
+    io.to(room).emit('game-has-begun', turnOrder);
+  });
+
+  socket.on('end-game', () => {
+    io.to(room).emit('game-has-ended');
   });
 
   socket.on('disconnect', () => {
