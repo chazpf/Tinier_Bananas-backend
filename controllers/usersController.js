@@ -3,6 +3,12 @@ const bcrypt = require('bcrypt');
 const users = express.Router();
 const User = require('../models/users.js');
 
+users.get('/', (req, res) => {
+  User.find({}, (err, foundUsers) => {
+    res.json(foundUsers);
+  });
+});
+
 users.get('/new', (req, res) => {
   res.send('new user page');
 });
@@ -45,6 +51,27 @@ users.delete('/:username', (req, res) => {
     } else {
       res.json(deletedUser);
     }
+  });
+});
+
+users.put('/:username', (req, res) => {
+  User.findOneAndUpdate(
+    { username: req.body.username },
+    req.body,
+    { new: true },
+    (err, updatedUser) => {
+      if (err) {
+        res.json('Something went wrong');
+      } else {
+        res.json(updatedUser);
+      }
+    }
+  );
+});
+
+users.get('/:username', (req, res) => {
+  User.find({ username: req.params.username }, (err, foundUser) => {
+    res.json(foundUser);
   });
 });
 
