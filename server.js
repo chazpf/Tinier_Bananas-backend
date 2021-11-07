@@ -33,6 +33,10 @@ io.on('connection', (socket) => {
 
   io.to(room).emit('joined', roomList[room]);
 
+  socket.on('kill-lanky', () => {
+    delete roomList['test'];
+  });
+
   socket.on('send-message', ({ sender, text, avatar }) => {
     io.to(room).emit('receive-message', { sender, text, avatar });
   });
