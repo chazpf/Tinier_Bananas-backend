@@ -73,6 +73,7 @@ users.put('/:username', (req, res) => {
       if (req.body.avatar !== '') {
         foundUser.avatar = req.body.avatar;
       }
+      foundUser.save();
       res.json(foundUser);
     }
   });
