@@ -10,16 +10,39 @@ const server = http.createServer(app);
 // socket.io
 const io = require('socket.io')(server, {
   cors: {
-    origin: 'http://fierce-mesa-54468.herokuapp.com',
+    origin: [
+      'http://fierce-mesa-54468.herokuapp.com',
+      'http://localhost:3000',
+      'https://fierce-mesa-54468.herokuapp.com',
+    ],
   },
 });
 
+const roomList = {};
+
 io.on('connection', (socket) => {
+  const username = socket.handshake.query.username;
   const room = socket.handshake.query.roomName;
   socket.join(room);
 
+  if (roomList[room]) {
+    roomList[room] = [...roomList[room], username];
+  } else {
+    roomList[room] = [socket.handshake.query.username]
+  }
+
+  io.to(room).emit('joined', roomList[room]);
+
   socket.on('send-message', ({ sender, text, avatar }) => {
     socket.broadcast.to(room).emit('receive-message', { sender, text, avatar });
+  });
+
+  socket.on('disconnect', () => {
+    socket.leave(room);
+    const index = roomList[room].indexOf(username);
+    roomList[room].splice(index, 1);
+    if (roomList[room].length === 0) delete roomList[room];
+    socket.broadcast.to(room).emit('joined', roomList[room]);
   });
 });
 
