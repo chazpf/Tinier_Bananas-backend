@@ -48,4 +48,19 @@ users.delete('/:username', (req, res) => {
   });
 });
 
+users.put('/:username', (req, res) => {
+  User.findOneAndUpdate(
+    { username: req.body.username },
+    req.body,
+    { new: true },
+    (err, updatedUser) => {
+      if (err) {
+        res.json('Something went wrong');
+      } else {
+        res.json(updatedUser);
+      }
+    }
+  );
+});
+
 module.exports = users;
