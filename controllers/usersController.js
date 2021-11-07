@@ -63,22 +63,18 @@ users.delete('/:username', (req, res) => {
 });
 
 users.put('/:username', (req, res) => {
-  User.findById(req.body.id, (err, foundUser) => {
-    if (err) {
-      res.json(err.message);
-    } else {
-      if (req.body.username !== '') {
-        foundUser.username = req.body.username;
+  User.findByIdAndUpdate(
+    req.body.id,
+    { $set: { username: req.body.username, avatar: req.body.avatar } },
+    { new: true },
+    (err, updatedUser) => {
+      if (err) {
+        res.json(err.message);
+      } else {
+        res.json(updatedUser);
       }
-      if (req.body.avatar !== '') {
-        foundUser.avatar = req.body.avatar;
-      }
-      foundUser.markModified('username');
-      foundUser.markModified('avatar');
-      foundUser.save();
-      res.json(foundUser);
     }
-  });
+  );
 });
 
 users.get('/:username', (req, res) => {
