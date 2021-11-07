@@ -3,6 +3,12 @@ const bcrypt = require('bcrypt');
 const users = express.Router();
 const User = require('../models/users.js');
 
+users.get('/', (req, res) => {
+  User.find({}, (err, foundUsers) => {
+    res.json(foundUsers);
+  });
+});
+
 users.get('/new', (req, res) => {
   res.send('new user page');
 });
@@ -61,6 +67,12 @@ users.put('/:username', (req, res) => {
       }
     }
   );
+});
+
+users.get('/:username', (req, res) => {
+  User.find({ username: req.params.username }, (err, foundUser) => {
+    res.json(foundUser);
+  });
 });
 
 module.exports = users;
