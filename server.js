@@ -37,6 +37,10 @@ io.on('connection', (socket) => {
     socket.broadcast.to(room).emit('receive-message', { sender, text, avatar });
   });
 
+  socket.on('begin-game', (gameState) => {
+    io.to(room).emit('game-has-begun', gameState);
+  });
+
   socket.on('disconnect', () => {
     socket.leave(room);
     const index = roomList[room].indexOf(username);
