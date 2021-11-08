@@ -4,6 +4,8 @@
 
 Backend server for the Tinier Bananas collaborative storytelling app.
 
+[Live to the live server](http://thawing-scrubland-60943.herokuapp.com/)
+
 ## Technologies Used
 
 ### Node + Express
