@@ -71,7 +71,11 @@ users.put('/:username', (req, res) => {
       if (err) {
         res.json(err.message);
       } else {
-        res.json(updatedUser);
+        res.json({
+          username: updatedUser.username,
+          avatar: updatedUser.avatar,
+          id: updatedUser._id
+        });
       }
     }
   );
