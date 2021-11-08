@@ -62,7 +62,7 @@ users.delete('/:username', (req, res) => {
   });
 });
 
-users.put('/:username', (req, res) => {
+users.put('update/:username', (req, res) => {
   User.findByIdAndUpdate(
     req.body.id,
     { $set: { username: req.body.username, avatar: req.body.avatar } },
@@ -74,7 +74,7 @@ users.put('/:username', (req, res) => {
         res.json({
           username: updatedUser.username,
           avatar: updatedUser.avatar,
-          id: updatedUser._id
+          id: updatedUser._id,
         });
       }
     }
