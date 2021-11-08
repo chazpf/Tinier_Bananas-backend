@@ -9,6 +9,8 @@ const server = http.createServer(app);
 
 // socket.io
 const io = require('socket.io')(server, {
+  pingInterval: 10000,
+  pingTimeout: 5000,
   cors: {
     origin: [
       'http://fierce-mesa-54468.herokuapp.com',
@@ -32,7 +34,7 @@ io.on('connection', (socket) => {
   }
 
   io.to(room).emit('joined', roomList[room]);
-  
+
   socket.on('send-message', ({ sender, text, avatar }) => {
     io.to(room).emit('receive-message', { sender, text, avatar });
   });
