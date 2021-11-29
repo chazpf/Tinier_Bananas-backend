@@ -33,7 +33,7 @@ The server uses a single controller to route requests concerning user creation, 
 
 - Prevent a user from joining a room if that room currently has a game in progress.
 - Properly handle a user leaving a game in progress, potentially with the ability to rejoin. Currently, the turn order breaks if a user leaves during a game.
-- Add funcitonality for the user to be able to save a story to their "favorite stories" collection.
+- Add functionality for the user to be able to save a story to their "favorite stories" collection.
 
 ###
 
